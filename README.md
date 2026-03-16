@@ -18,6 +18,11 @@
 [![Powered by Claude](https://img.shields.io/badge/Powered%20by-Claude%20AI-orange)](https://anthropic.com)
 [![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED)](docker/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Made by Wronce](https://img.shields.io/badge/Made%20by-Wronce.com-black)](https://wronce.com)
+
+<br />
+
+**Created by [Rafael Nikogosian](https://wronce.com) · Founder of [Wronce.com](https://wronce.com) · [@rn.arturovich](https://instagram.com/rn.arturovich)**
 
 <br />
 
@@ -39,6 +44,8 @@ create a HubSpot contact, and notify the #sales Slack channel"
 ```
 
 And get a fully-connected, production-ready workflow JSON — ready to import in seconds.
+
+> Built by **Rafael Nikogosian**, Founder of [Wronce.com](https://wronce.com) — a web studio and digital agency based in Los Angeles, specializing in web development, SEO, SaaS products, and AI automation.
 
 ---
 
@@ -64,72 +71,25 @@ And get a fully-connected, production-ready workflow JSON — ready to import in
 ### Install
 
 ```bash
-# Clone the repo
-git clone https://github.com/wronce/flowgent.git
+git clone https://github.com/rnarturovich/flowgent.git
 cd flowgent
-
-# Install dependencies
 npm install
-
-# Copy env template and add your key
 cp .env.example .env
-# Edit .env → set ANTHROPIC_API_KEY=your_key_here
-
-# Build
 npm run build
-
-# Link globally (optional)
 npm link
 ```
 
 ### Generate your first workflow
 
 ```bash
-# Generate an n8n workflow
 flowgent gen "Every day at 9am, fetch top 5 posts from Hacker News and post them to Slack"
-
-# Generate a Make.com scenario
-flowgent gen --platform make "When a Stripe payment fails, send a recovery email via Gmail and create a task in Asana"
-
-# Interactive mode (guided)
+flowgent gen --platform make "When a Stripe payment fails, send a recovery email via Gmail"
 flowgent interactive
 ```
 
 ---
 
 ## 📋 Examples
-
-### Lead enrichment pipeline
-
-```bash
-flowgent gen "New Typeform lead → enrich with Clearbit → create HubSpot contact → Slack notification"
-```
-
-<details>
-<summary>View generated workflow →</summary>
-
-See [`workflows/examples/lead-enrich-pipeline.n8n.json`](workflows/examples/lead-enrich-pipeline.n8n.json)
-
-</details>
-
----
-
-### AI invoice processor (Make.com)
-
-```bash
-flowgent gen --platform make "Watch Gmail for invoices, extract vendor and amount with AI, log to Google Sheets, notify #finance on Slack"
-```
-
-<details>
-<summary>View generated scenario →</summary>
-
-See [`workflows/examples/invoice-processor.make.json`](workflows/examples/invoice-processor.make.json)
-
-</details>
-
----
-
-### More prompts to try
 
 | Prompt | Platform |
 |--------|----------|
@@ -138,6 +98,8 @@ See [`workflows/examples/invoice-processor.make.json`](workflows/examples/invoic
 | `"New Airtable row → generate product description with AI → publish to Shopify"` | make |
 | `"Every hour check competitor prices → store in Postgres → alert if drop >10%"` | n8n |
 | `"Customer emails Zendesk → AI draft reply → human approval → auto-send"` | make |
+
+See [`workflows/examples/`](workflows/examples/) for ready-to-import blueprints.
 
 ---
 
@@ -150,52 +112,26 @@ Commands:
   generate, gen    Generate a workflow from a prompt
   interactive, i   Launch interactive guided mode
 
-Options for `generate`:
+Options:
   -p, --platform <n8n|make>   Target platform (default: n8n)
   -o, --output <path>         Output directory (default: ./output)
-  --stdout                    Print JSON to stdout instead of saving
-  -v, --verbose               Show detailed generation logs
-  -V, --version               Show version number
-  -h, --help                  Show help
-```
-
-### Examples
-
-```bash
-# Save to custom directory
-flowgent gen --output ./my-workflows "Weekly report email from Airtable"
-
-# Pipe to another tool
-flowgent gen --stdout "Webhook → Slack" | jq '.nodes | length'
-
-# Make.com scenario
-flowgent gen --platform make "New Stripe subscription → welcome email → add to Mailchimp"
+  --stdout                    Print JSON to stdout
+  -v, --verbose               Show detailed logs
 ```
 
 ---
 
 ## 🐳 Docker / Self-Hosted
 
-### Standalone
-
 ```bash
 cd docker
 docker build -t flowgent ..
 docker run --rm -e ANTHROPIC_API_KEY=your_key \
   -v $(pwd)/output:/app/output \
-  flowgent gen "Shopify order → pack slip PDF → email customer"
-```
+  flowgent gen "Shopify order → email customer"
 
-### With bundled n8n
-
-```bash
-cd docker
-cp ../.env.example .env  # Fill in your keys
+# With bundled n8n
 docker compose --profile with-n8n up -d
-
-# Generate workflow
-docker compose run --rm flowgent gen "Your automation here"
-# Then open http://localhost:5678 → import the JSON from ./output/
 ```
 
 ---
@@ -212,9 +148,8 @@ const result = await generator.generate({
   prompt: 'New GitHub star → tweet thank you → log to Airtable',
 });
 
-console.log(result.workflow);   // Ready-to-import n8n JSON
-console.log(result.nodeCount);  // e.g. 4
-console.log(result.warnings);   // Any issues flagged by AI
+console.log(result.workflow);  // Ready-to-import JSON
+console.log(result.warnings);  // AI-flagged issues
 ```
 
 ---
@@ -224,71 +159,61 @@ console.log(result.warnings);   // Any issues flagged by AI
 ```
 flowgent/
 ├── src/
-│   ├── cli/
-│   │   └── index.ts          # CLI entry point (Commander.js)
-│   ├── core/
-│   │   ├── generator.ts      # AI generation engine
-│   │   └── types.ts          # TypeScript interfaces
-│   ├── prompts/
-│   │   └── workflow-builder.ts  # Claude system & user prompts
-│   ├── utils/
-│   │   ├── display.ts        # CLI output formatting
-│   │   └── output.ts         # File saving utilities
-│   └── index.ts              # Library entry point
-├── workflows/
-│   └── examples/             # Ready-to-use workflow blueprints
-├── docker/
-│   ├── Dockerfile
-│   └── docker-compose.yml
-├── tests/
-│   └── generator.test.ts
-├── docs/
-│   ├── PROMPTING_GUIDE.md
-│   └── IMPORTING_WORKFLOWS.md
-└── README.md
+│   ├── cli/index.ts              # CLI entry point
+│   ├── core/generator.ts         # AI generation engine
+│   ├── core/types.ts             # TypeScript interfaces
+│   ├── prompts/workflow-builder.ts
+│   └── utils/display.ts + output.ts
+├── workflows/examples/           # Ready-to-use blueprints
+├── docker/                       # Dockerfile + compose
+├── docs/                         # Guides
+└── tests/
 ```
 
 ---
 
-## 🧪 Running Tests
+## 🧪 Tests
 
 ```bash
 npm test
-
-# With coverage
-npm test -- --coverage
+node validate.js   # Zero-dependency validation suite (35 tests)
 ```
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
+PRs are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-```bash
-# Fork → clone → branch
-git checkout -b feat/your-feature
-
-# Make changes, add tests
-npm test
-
-# Submit PR
-```
-
-Areas we'd love help with:
-- Additional platform support (Zapier, Pipedream, Activepieces)
-- More example workflows in `workflows/examples/`
-- Improved AI prompts for edge cases
+Areas to contribute:
+- Additional platforms (Zapier, Pipedream, Activepieces)
+- More example workflows
 - Web UI
 
 ---
 
 ## 📄 License
 
-MIT © [Wronce](https://wronce.com)
+MIT © [Rafael Nikogosian](https://wronce.com)
 
 ---
 
 <div align="center">
-  <sub>Built with ❤️ by <a href="https://wronce.com">Wronce</a> — Web Studio & Digital Agency, Los Angeles</sub>
+
+### Built by Rafael Nikogosian
+
+**Founder & Developer · [Wronce.com](https://wronce.com)**  
+Web Studio & Digital Agency · Los Angeles, CA  
+AI Automation · SaaS Development · SEO · Web Development
+
+<br />
+
+[![Website](https://img.shields.io/badge/🌐%20Website-wronce.com-000000?style=for-the-badge)](https://wronce.com)
+[![Instagram](https://img.shields.io/badge/📸%20Instagram-@rn.arturovich-E4405F?style=for-the-badge)](https://instagram.com/rn.arturovich)
+[![GitHub](https://img.shields.io/badge/💻%20GitHub-rnarturovich-181717?style=for-the-badge)](https://github.com/rnarturovich)
+
+<br />
+
+*If FlowGent saves you time, drop a ⭐ — it helps others discover this tool.*
+
 </div>
