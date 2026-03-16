@@ -22,7 +22,7 @@
 
 <br />
 
-**Created by [Rafael Nikogosian](https://wronce.com) · Founder of [Wronce.com](https://wronce.com) · [@rn.arturovich](https://instagram.com/rn.arturovich)**
+**Created by [Rafael Nikogosian](https://instagram.com/rn.arturovich) · Founder of [Wronce.com](https://wronce.com) · [@rn.arturovich](https://instagram.com/rn.arturovich)**
 
 <br />
 
@@ -45,7 +45,7 @@ create a HubSpot contact, and notify the #sales Slack channel"
 
 And get a fully-connected, production-ready workflow JSON — ready to import in seconds.
 
-> Built by **Rafael Nikogosian**, Founder of [Wronce.com](https://wronce.com) — a web studio and digital agency based in Los Angeles, specializing in web development, SEO, SaaS products, and AI automation.
+> Built by **[Rafael Nikogosian](https://instagram.com/rn.arturovich)**, Founder of [Wronce.com](https://wronce.com) — a web studio and digital agency based in Los Angeles, specializing in web development, SEO, SaaS products, and AI automation.
 
 ---
 
@@ -194,13 +194,13 @@ Areas to contribute:
 
 ## 📄 License
 
-MIT © [Rafael Nikogosian](https://wronce.com)
+MIT © [Rafael Nikogosian](https://instagram.com/rn.arturovich)
 
 ---
 
 <div align="center">
 
-### Built by Rafael Nikogosian
+### Built by [Rafael Nikogosian](https://instagram.com/rn.arturovich)
 
 **Founder & Developer · [Wronce.com](https://wronce.com)**  
 Web Studio & Digital Agency · Los Angeles, CA  
